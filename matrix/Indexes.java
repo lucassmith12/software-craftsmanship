@@ -30,6 +30,9 @@ public record Indexes(int row, int column)implements Comparable<Indexes> {
 	public <S> S value(S[][] matrix) {
 		return matrix[row][column];
 	}
+	public <S> S value(Matrix<Indexes, S> matrix) {
+		return matrix.value(this);
+	}
 	public boolean areDiagonal() {
 		return !this.equals(null) && row == column;
 	}
@@ -39,12 +42,8 @@ public record Indexes(int row, int column)implements Comparable<Indexes> {
 	
 	//As long as no indexes are null, return a stream of all indexes between from and to
 	public static Stream<Indexes> stream(Indexes from, Indexes to){ 
-		if(from == null) {
-			throw new NullPointerException("First Indexes are Null");
-			}
-		if(to == null) {
-			throw new NullPointerException("Second Indexes are Null");
-		}
+		from = Objects.requireNonNull(from);
+		to = Objects.requireNonNull(to);
 		
 		List<Indexes> builder = new ArrayList<>();
 		

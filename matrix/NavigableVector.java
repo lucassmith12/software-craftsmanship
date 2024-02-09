@@ -3,6 +3,7 @@ package matrix;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
+import java.util.Objects;
 import java.util.TreeMap;
 /**
  * Navigable Vector -- represents a vector in a matrix
@@ -17,18 +18,20 @@ public final class NavigableVector<T> extends AbstractMatrix<Integer,T>{
     	super(m,z);
     }
     public static <S> NavigableVector<S> from (Map<Integer, S> vector, S zero){
-        if(vector == null) {
-        	return null;
-        }
-        
-    	NavigableVector<S> vectorToReturn = new NavigableVector<S>(new TreeMap<Integer, S>(), zero);
+        vector = Objects.requireNonNull(vector);
+    	TreeMap<Integer, S> entries = new TreeMap<Integer,S>(); 
     	
     	for(Entry<Integer, S> e: vector.entrySet()) {
     		if(e!= null && !e.getValue().equals(zero)) {
-    			vectorToReturn.matrix.put(e.getKey(), e.getValue());
+    			entries.put(e.getKey(), e.getValue());
     		}
     	}
+    	NavigableVector<S> vectorToReturn = new NavigableVector<S>(entries, zero);
     	return vectorToReturn;
+    }
+	
+    public PeekingIterator<Map.Entry<Integer, T>> peekingIterator(){
+    	return PeekingIterator.from(matrix.entrySet().iterator());
     }
   
 }

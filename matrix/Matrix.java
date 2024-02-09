@@ -1,5 +1,6 @@
 package matrix;
 
+import java.util.Map;
 import java.util.NavigableMap;
 /**
  * Matrix Interface
@@ -12,4 +13,5 @@ interface Matrix<I,T> {
     public T value(I index);
     public T zero();
     public NavigableMap<I, T> representation();
+    public PeekingIterator<Map.Entry<I,T>> peekingIterator();
 }

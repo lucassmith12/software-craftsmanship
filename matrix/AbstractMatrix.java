@@ -1,10 +1,11 @@
 package matrix;
 
 
+import java.util.Collections;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 /**
- * Abstract Matrix representation as an implementation of a matrix abstraction
+ * Abstract Matrix representation 
  * @author Lucas Smith
  * @since 02-01-24
  * @version 1.0
@@ -15,7 +16,7 @@ public abstract class AbstractMatrix<I,T> implements Matrix<I,T>{
     private final T zero;
 
     protected AbstractMatrix(NavigableMap<I,T> m, T z){
-        matrix = m;
+        matrix = Collections.unmodifiableNavigableMap(m);
         zero = z;
     }
     
@@ -27,9 +28,7 @@ public abstract class AbstractMatrix<I,T> implements Matrix<I,T>{
     }
     //Returns a copy of the balanced BST
     public NavigableMap<I, T> representation(){
-    	NavigableMap<I,T> mapToReturn = new TreeMap<>();
-    	mapToReturn.putAll(matrix);
-    	return mapToReturn;
+    	return new TreeMap<>(matrix);
     }
-
+    
 }
