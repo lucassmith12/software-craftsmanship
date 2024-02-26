@@ -2,6 +2,7 @@ package matrix;
 
 import static org.junit.Assert.*;
 
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 
 import org.junit.Test;
@@ -89,6 +90,67 @@ public class NavigableMatrixTest {
 				assertEquals(inputMatrix[i][j], result.value(new Indexes(i,j)));
 			}
 		}
+	}
+	
+	@Test
+	public void testMerge() {
+		Integer[][] inputMatrix = {
+				{1, 2, 3},
+				{4, 5, 6},
+				{7, 8, 9}
+		};
+		BinaryOperator<Integer> add = (a, b) -> a + b;
+		NavigableMatrix<Integer> first = NavigableMatrix.from(inputMatrix, 0);
+		NavigableMatrix<Integer> second = NavigableMatrix.constant(3, 3, 2, 0);
+		Matrix<Indexes,Integer> third = first.merge(second, add);
+		Indexes.stream(new Indexes(3,3)).forEach(n -> assertEquals("", 3+(n.row()*3 + n.column()) == third.value(n), true));
+		
+	}
+	
+	@Test
+	public void testRow() {
+		// Test input data
+        int rows = 3;
+        int columns = 4;
+        Integer zeroValue = 0;
+
+        Function<Indexes, Integer> valueMapper = new Function<Indexes, Integer>() {
+            @Override
+            public Integer apply(Indexes indexes) {
+               
+                return (indexes.row()*columns)+indexes.column()+1;
+            }
+        };
+        NavigableMatrix<Integer> result = NavigableMatrix.instance(rows, columns, valueMapper, zeroValue);
+        NavigableVector<Integer> toRow = result.row(0);
+       
+        
+        assertEquals("Index 0 of the row is incorrect", toRow.value(0) == 1, true);
+        assertEquals("Index 1 of the row is incorrect", toRow.value(1) == 2, true);
+        assertEquals("Index 2 of the row is incorrect", toRow.value(2) == 3, true);
+        assertEquals("Index 3 of the row is incorrect", toRow.value(3) == 4, true);
+	}
+	
+	@Test
+	public void testColumn() {
+		// Test input data
+        int rows = 3;
+        int columns = 4;
+        Integer zeroValue = 0;
+
+        Function<Indexes, Integer> valueMapper = new Function<Indexes, Integer>() {
+            @Override
+            public Integer apply(Indexes indexes) {
+               
+                return (indexes.row()*columns)+indexes.column()+1;
+            }
+        };
+        NavigableMatrix<Integer> result = NavigableMatrix.instance(rows, columns, valueMapper, zeroValue);
+        NavigableVector<Integer> toCol = result.column(0);
+        assertEquals("Index 0 of the column is incorrect", toCol.value(0) == 1, true);
+        assertEquals("Index 1 of the column is incorrect", toCol.value(1) == 5, true);
+        assertEquals("Index 2 of the column is incorrect", toCol.value(2) == 9, true);
+
 	}
 
 

@@ -1,6 +1,7 @@
 package matrix;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class PeekingIterator<E> implements Iterator<E> {
@@ -13,19 +14,26 @@ public final class PeekingIterator<E> implements Iterator<E> {
 	}
 
 	public static <E> PeekingIterator<E> from(Iterator<E> iter) {
-		return new PeekingIterator<E>(iter);
+		return new PeekingIterator<E>(Objects.requireNonNull(iter));
 	}
 	public static <E> PeekingIterator<E> from(Iterable<E> iter) {
-		return new PeekingIterator<E>(iter.iterator());
+		return new PeekingIterator<E>(Objects.requireNonNull(iter).iterator());
 	}
+	@Override
 	public boolean hasNext() {
-		if(next.equals(null)) return false;
-		return true;
+		return next.isPresent();
 	}
 
-	
+	@Override
 	public E next() {
-		return it.next();
+		E e = next.get();
+		if(it.hasNext()) {
+			next = Optional.of(it.next());
+		}
+		else {
+			next = Optional.empty();
+		}
+		return e;
 	}
 	
 	public Optional<E> peek() {

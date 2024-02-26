@@ -34,7 +34,7 @@ public record Indexes(int row, int column)implements Comparable<Indexes> {
 		return matrix.value(this);
 	}
 	public boolean areDiagonal() {
-		return !this.equals(null) && row == column;
+		return row == column;
 	}
 	public int compareTo(Indexes index) {
 		return byRows.compare(this, index);

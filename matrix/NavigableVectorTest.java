@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BinaryOperator;
 
 import org.junit.Test;
 import static org.junit.Assert.assertNull;
@@ -37,5 +38,22 @@ public class NavigableVectorTest {
 		tester.put(null, null);
 		assertNull(NavigableVector.from(null, 0));
 	}
+	@Test
+	public void testMerge() {
+		Map <Integer, Integer> tester1 = new HashMap<>();
+		tester1.put(2, 1);	
+		tester1.put(4, 5);
+
+		NavigableVector.from(tester1, 0);
+		
+		Map <Integer, Integer> tester2 = new HashMap<>();
+		tester2.put(3, 3);
+		tester2.put(2, 6);
+
+		NavigableVector.from(tester2, 0);
+		BinaryOperator<Integer> add = (a, b) -> a + b;
+		assertEquals(tester1.merge(tester2, add, 0) == tester1.equals(tester2, true));
+	}
+	
 
 }

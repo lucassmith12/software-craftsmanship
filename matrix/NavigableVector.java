@@ -1,7 +1,9 @@
 package matrix;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BinaryOperator;
 import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -20,7 +22,7 @@ public final class NavigableVector<T> extends AbstractMatrix<Integer,T>{
     public static <S> NavigableVector<S> from (Map<Integer, S> vector, S zero){
         vector = Objects.requireNonNull(vector);
     	TreeMap<Integer, S> entries = new TreeMap<Integer,S>(); 
-    	
+    	//Do with streams
     	for(Entry<Integer, S> e: vector.entrySet()) {
     		if(e!= null && !e.getValue().equals(zero)) {
     			entries.put(e.getKey(), e.getValue());
@@ -33,5 +35,13 @@ public final class NavigableVector<T> extends AbstractMatrix<Integer,T>{
     public PeekingIterator<Map.Entry<Integer, T>> peekingIterator(){
     	return PeekingIterator.from(matrix.entrySet().iterator());
     }
+    
+    
+	public Matrix<Integer, T> merge(Matrix<Integer, T> other, BinaryOperator<T> op) {
+		InconsistentZeroException.requireMatching(this, other);
+		return NavigableVector.from(
+				MapMerger.merge(peekingIterator(), other.peekingIterator(), 
+				Comparator.naturalOrder(), op, 0, zero()), zero());
+	}
   
 }

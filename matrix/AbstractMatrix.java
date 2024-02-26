@@ -2,8 +2,10 @@ package matrix;
 
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.function.BinaryOperator;
 /**
  * Abstract Matrix representation 
  * @author Lucas Smith

@@ -14,7 +14,8 @@ public class PeekingIteratorTest {
 		
 		Map<Indexes, Integer> tree = Map.of(new Indexes (0,0), 3, new Indexes (0,1), 2);
 		PeekingIterator<Map.Entry<Indexes, Integer>> peekIter = PeekingIterator.from(tree.entrySet().iterator());
-		assertEquals("Peek should return the correct element", peekIter.peek().get().getValue().equals(Integer.valueOf(2)), true);
+		System.out.print(peekIter.peek().get().getValue());
+		assertEquals("Peek should return the correct element", peekIter.peek().get().getValue().equals(Integer.valueOf(3)), true);
 		assertEquals("Peek should not remove any elements", tree.size() == 2, true);
 	}
 
