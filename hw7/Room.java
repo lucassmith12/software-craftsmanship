@@ -5,6 +5,12 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Representation of a room 
+ * 
+ * @author Lucas Smith
+ * @since 3/8/2024
+ */
 public class Room {
 	List<Room> neighbors;
 	int weight;
