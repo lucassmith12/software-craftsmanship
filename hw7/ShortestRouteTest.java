@@ -2,6 +2,8 @@ package hw7;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 public class ShortestRouteTest {
@@ -48,11 +50,20 @@ public class ShortestRouteTest {
 		
 		room8.neighbors.add(room5);
 		
-		for(Room room:ShortestRoute.shortestRoute(room1, weights)) {
-			System.out.print(room.id + 1);
-			System.out.print(", ");
-		}
-		System.out.println();
+		List<Room> route = ShortestRoute.shortestRoute(room1, weights);
+		assertEquals(route.get(0).id+1==1, true);
+		assertEquals(route.get(1).id+1==2, true);
+		assertEquals(route.get(2).id+1==3, true);
+		assertEquals(route.get(3).id+1==4, true);
+		assertEquals(route.get(4).id+1==3, true);
+		assertEquals(route.get(5).id+1==2, true);
+		assertEquals(route.get(6).id+1==1, true);
+		assertEquals(route.get(7).id+1==5, true);
+		assertEquals(route.get(8).id+1==6, true);
+		assertEquals(route.get(9).id+1==5, true);
+		assertEquals(route.get(10).id+1==8, true);
+		assertEquals(route.get(11).id+1==5, true);
+		assertEquals(route.get(12).id+1==7, true);
 	}
 
 }
