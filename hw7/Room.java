@@ -1,11 +1,13 @@
 package hw7;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Room {
-	ArrayList<Room> neighbors;
-	Room parent;
+	List<Room> neighbors;
+	int weight;
 	int id;
 	boolean visited;
 	public Room(int i) {
@@ -14,8 +16,13 @@ public class Room {
 		visited = false;
 	}
 	
-	public void sortNeighbors(Room parent, int[][] weights) {
-		Collections.sort(neighbors, (n1, n2) -> weights[parent.id][n2.id]-weights[parent.id][n2.id]);
+	public void sortNeighbors(int[][] weights) {
+		Comparator<Room> comparator = (room1, room2) -> {
+            int weight1 = weights[this.id][room1.id];
+            int weight2 = weights[this.id][room2.id];
+            return Integer.compare(weight1, weight2); 
+        	};
+		this.neighbors.sort(comparator);
 	}
 
 }
