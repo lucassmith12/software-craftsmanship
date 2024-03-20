@@ -1,0 +1,1 @@
+To compile this code, simply open the attached java files in a package called matrix in your preferred IDE with Java 14 or higher installed. Then run any individual JUnit test by clicking "Run" on the method, wherever said IDE places that button. If problems persist, contact Lucas Smith at ljs174@case.edu for further assistance. Thank you, and happy coding!
