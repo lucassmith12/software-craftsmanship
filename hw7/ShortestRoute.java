@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+
 /**
  * Programming Assignment 7 -- create algorithm to find the shortest route through a building of 
  * n rooms and n-1 hallways
@@ -55,6 +56,8 @@ public class ShortestRoute {
 	 * @return -- a list representation of a traversal through every node in the graph
 	 */
 	private static List<Room> routeBuilder(Room start, int[][]weights, List<Room> build){
+		assert start != null;
+		assert weights != null;
 		build.add(start);
 		start.visited = false;
 
@@ -84,6 +87,8 @@ public class ShortestRoute {
 			}
 		}
 		return build;
+		
+		
 	}
 
 	/**
@@ -94,6 +99,8 @@ public class ShortestRoute {
 	 * @param weights -- Weight chart
 	 */
 	private static void weightGraph(Room start, int[][] weights) {
+		assert start != null;
+		assert weights != null;
 		start.visited = true;
 		//Base Case: "leaf" node, the weight of an empty subgraph is 0 so return
 		if(start.neighbors.size() <=1) {
@@ -111,6 +118,135 @@ public class ShortestRoute {
 				weightGraph(neighbor, weights);
 				start.weight+=neighbor.weight;
 			}
+		}
+	}
+	class routeBuilderTests{
+		//Tests CC2
+		public static List<Room> mainCC() {
+			
+			Room start = new Room(0);
+			Room neighbor1 = new Room(1);
+			Room neighbor2 = new Room(2);
+			
+			start.neighbors.add(neighbor1);
+			neighbor1.neighbors.add(start);
+			start.neighbors.add(neighbor2);
+			neighbor2.neighbors.add(start);
+			
+			neighbor1.visited = true;
+			neighbor2.visited = true;
+			
+			int [][] weights = {{0,1,2},{1,0,-1},{2,-1,0}}; 
+			List<Room> build = new ArrayList<>();
+			return routeBuilder(start, weights, build);
+			
+			
+		}
+		
+		//Tests CC1, Branch 1 
+		public static List<Room> branch() {
+			
+			Room start = new Room(0);
+			List<Room> build = new ArrayList<>();
+			int [][] weights = {{0},{0}}; 
+			return ShortestRoute.routeBuilder(start, weights, build);
+			
+			
+
+		}
+		
+		//Tests Boundary, Branch 2
+		public static List<Room> boundary() {
+			
+			Room start = new Room(0);
+			Room neighbor = new Room(1);
+			neighbor.visited = false;
+			int [][] weights = {{0,1}, {1,0}}; 
+			List<Room> build = new ArrayList<>();
+			
+			return ShortestRoute.routeBuilder(start, weights, build);
+			
+			
+
+			
+		}
+		
+		//Tests bad data
+		public static AssertionError badData() {
+			
+			Room start = null;
+			int[][] weights = null;
+			
+			try{
+				List<Room> build = new ArrayList<>();
+				build = ShortestRoute.routeBuilder(start, weights, build);
+			}catch(AssertionError e) {
+				return e;
+			}
+			return null;
+		}
+
+	}
+	class weightGraphTests{
+		//Tests CC2
+		public static List<Room> mainCC() {
+			
+			Room start = new Room(0);
+			Room neighbor1 = new Room(1);
+			Room neighbor2 = new Room(2);
+			neighbor1.visited = false;
+			neighbor2.visited = false;
+			
+			int [][] weights = {{0,1,2},{1,0,-1},{2,-1,0}}; 
+			List<Room> build = new ArrayList<>();
+			return routeBuilder(start, weights, build);
+			
+			
+		}
+		
+		//Tests CC1, Branch 1 
+		public static List<Room> branch() {
+			
+			Room start = new Room(0);
+			List<Room> build = new ArrayList<>();
+			int [][] weights = {{0},{0}}; 
+			return ShortestRoute.routeBuilder(start, weights, build);
+			
+			
+
+		}
+		
+		//Tests Boundary, Branch 2
+		public static List<Room> boundary() {
+			
+			Room start = new Room(0);
+			Room neighbor = new Room(1);
+			start.neighbors.add(neighbor);
+			neighbor.neighbors.add(start);
+			neighbor.visited = true;
+			int [][] weights = {{0,1}, {1,0}}; 
+			List<Room> build = new ArrayList<>();
+			
+			return ShortestRoute.routeBuilder(start, weights, build);
+			
+			
+
+			
+		}
+		
+		//Tests bad data
+		public static AssertionError badData() {
+			
+			Room start = null;
+			int[][] weights = null;
+			
+			try{
+				List<Room> build = new ArrayList<>();
+				build = ShortestRoute.routeBuilder(start, weights, build);
+			}catch(AssertionError e) {
+				return e;
+			}
+			return null;
 		}
 	}
 }

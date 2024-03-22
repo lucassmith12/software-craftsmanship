@@ -6,8 +6,12 @@ import java.util.List;
 
 import org.junit.Test;
 
+import hw7.ShortestRoute.routeBuilderTests;
+import hw7.ShortestRoute.weightGraphTests;
+
 public class ShortestRouteTest {
 
+	//Legacy code - good data
 	@Test
 	public void testShortestRouteMain() {
 		//CC, Boundary 1 testcase
@@ -100,7 +104,8 @@ public class ShortestRouteTest {
 		assertEquals(pairRoute.get(0).weight, 1);
 		
 	}
-	public void testBadData() {
+	@Test
+	public void testShortestRouteBadData() {
 		int[][] weights = null;
 		Room one = null;
 		boolean thrown = false;
@@ -114,5 +119,67 @@ public class ShortestRouteTest {
 			fail();
 		}
 	}
-
+	
+	//Tests for routeBuilder
+	@Test
+	public void testBuildRouteMain() {
+		List<Room> main = routeBuilderTests.mainCC();
+		
+		int[] expected = {0,1,0,2,0};
+		for(int i = 0; i<3; i++) {
+			assertEquals(main.get(i).id, expected[i]);
+		}
+		
+				
+	}
+	@Test
+	public void testBuildRouteBranch() {
+		List<Room> branch = routeBuilderTests.branch();
+		assertEquals(branch.get(0).id,0);
+		assertEquals(branch.size(), 1);
+	}
+	
+	@Test
+	public void testBuildRouteBoundary() {
+		List<Room> boundary = routeBuilderTests.boundary();
+		assertEquals(boundary.get(0).id,0);
+		assertEquals(boundary.size(), 1);
+	}
+	
+	@Test
+	public void testBuildRouteData() {
+		AssertionError data = routeBuilderTests.badData();
+		if(data==null) {
+			fail();
+		}
+	}
+	
+	//Tests for weightGraph
+	@Test
+	public void testWeightGraphMain() {
+		List<Room> mainCC = weightGraphTests.mainCC();
+		int[] expected = {3,0,0};
+		for(int i = 0; i<3; i++) {
+			assertEquals(mainCC.get(i).weight, expected[i]);
+		}
+	}
+	@Test
+	public void testWeightGraphBranch() {
+		List<Room> branch = weightGraphTests.mainCC();
+		assertEquals(branch.get(0).weight,0);
+		assertEquals(branch.size(), 1);
+	}
+	@Test
+	public void testWeightGraphBoundary() {
+		List<Room> boundary = weightGraphTests.mainCC();
+		assertEquals(boundary.get(0).weight,0);
+		assertEquals(boundary.size(), 1);
+	}
+	@Test
+	public void testWeightGraphData() {
+		AssertionError data = weightGraphTests.badData();
+		if(data== null) {
+			fail();
+		}
+	}
 }
