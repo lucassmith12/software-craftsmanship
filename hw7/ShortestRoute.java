@@ -25,6 +25,7 @@ public class ShortestRoute {
 	 */
 	public static List<Room> shortestRoute(Room start, int[][] weights){
 		Objects.requireNonNull(start);
+		Objects.requireNonNull(weights);
 
 		List<Room> routeList = new ArrayList<>();
 
@@ -35,8 +36,10 @@ public class ShortestRoute {
 		routeList = routeBuilder(start, weights, routeList);
 
 		//The last entries in routeList are an unnecessary path back to the start, so we remove them
-		while(routeList.get(routeList.size()-1).neighbors.size()!=1) {
+		
+		while(routeList.get(routeList.size()-1).neighbors.size()>1) {
 			routeList.remove(routeList.size()-1);
+			
 		}
 
 		return routeList;
@@ -59,7 +62,7 @@ public class ShortestRoute {
 		//Pseudocode: if u has no unvisited neighbors do:
 		//return {0, {u}}
 
-		if(start.neighbors.size()==1) {
+		if(start.neighbors.size()<=1) {
 			return build;
 		}
 
@@ -93,7 +96,7 @@ public class ShortestRoute {
 	private static void weightGraph(Room start, int[][] weights) {
 		start.visited = true;
 		//Base Case: "leaf" node, the weight of an empty subgraph is 0 so return
-		if(start.neighbors.size() ==1) {
+		if(start.neighbors.size() <=1) {
 			return;
 		}
 

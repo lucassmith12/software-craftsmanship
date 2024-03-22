@@ -30,5 +30,6 @@ public class Room {
         	};
 		this.neighbors.sort(comparator);
 	}
+	
 
 }
