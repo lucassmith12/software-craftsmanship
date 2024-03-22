@@ -13,8 +13,8 @@ public class ShortestRouteTest {
 
 	//Legacy code - good data
 	@Test
+	//CC, Boundary 1, good data testcase
 	public void testShortestRouteMain() {
-		//CC, Boundary 1, good data testcase
 		int[][] weights = {
 		{0,1,-1,-1,1,-1,-1,-1},                   
 		{1,0,1,-1,-1,-1,-1,-1},                   
@@ -77,9 +77,10 @@ public class ShortestRouteTest {
 		
 	}
 	
-	@Test
+	@Test 
+	//Tests Branch and Boundary 2 
 	public void testShortestRouteBranch() {
-		//Branch Coverage and Boundary 2 - make while false
+		
 		Room soloRoom = new Room(0);
 		int[][]weights = new int[1][1];
 		weights[0][0] = 0;
@@ -90,8 +91,8 @@ public class ShortestRouteTest {
 	}
 	
 	@Test
+	//Tests Boundary 3 
 	public void testShortestRouteBoundary() {
-		//Boundary 3 - one neighbor, visited
 		Room zero = new Room(0);
 		Room one = new Room(1);
 		zero.neighbors.add(one);
@@ -105,6 +106,7 @@ public class ShortestRouteTest {
 		
 	}
 	@Test
+	//Tests bad neighbor
 	public void testShortestRouteBadData() {
 		int[][] weights = null;
 		Room one = null;
@@ -122,6 +124,7 @@ public class ShortestRouteTest {
 	
 	//Tests for routeBuilder
 	@Test
+	//Tests CC2, good data
 	public void testBuildRouteMain() {
 		List<Room> main = routeBuilderTests.mainCC();
 		
@@ -133,6 +136,7 @@ public class ShortestRouteTest {
 				
 	}
 	@Test
+	//Tests CC1, branch 1
 	public void testBuildRouteBranch() {
 		List<Room> branch = routeBuilderTests.branch();
 		assertEquals(branch.get(0).id,0);
@@ -140,6 +144,7 @@ public class ShortestRouteTest {
 	}
 	
 	@Test
+	//Tests Boundary, branch 2
 	public void testBuildRouteBoundary() {
 		List<Room> boundary = routeBuilderTests.boundary();
 		assertEquals(boundary.get(0).id,0);
@@ -147,6 +152,7 @@ public class ShortestRouteTest {
 	}
 	
 	@Test
+	//Tests bad data
 	public void testBuildRouteData() {
 		int data = routeBuilderTests.badData();
 		if(data!=2) {
@@ -155,28 +161,32 @@ public class ShortestRouteTest {
 	}
 	
 	//Tests for weightGraph
+	
 	@Test
+	//Tests CC2, good data
 	public void testWeightGraphMain() {
 		List<Room> mainCC = weightGraphTests.mainCC();
 		int[] expected = {6,0,0};
-		System.out.println(mainCC.get(0).weight);
 		for(int i = 0; i<3; i++) {
 			assertEquals(mainCC.get(i).weight, expected[i]);
 		}
 	}
 	@Test
+	//Tests CC1, branch 1
 	public void testWeightGraphBranch() {
 		List<Room> branch = weightGraphTests.branch();
 		assertEquals(branch.get(0).weight,0);
 		assertEquals(branch.size(), 1);
 	}
 	@Test
+	//Tests boundary, branch 2
 	public void testWeightGraphBoundary() {
 		List<Room> boundary = weightGraphTests.boundary();
 		assertEquals(boundary.get(0).weight,0);
 		
 	}
 	@Test
+	//Tests bad data
 	public void testWeightGraphData() {
 		int data = weightGraphTests.badData();
 		if(data!= 2) {

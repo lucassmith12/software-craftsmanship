@@ -161,10 +161,6 @@ public class ShortestRoute {
 			List<Room> build = new ArrayList<>();
 			
 			return ShortestRoute.routeBuilder(start, weights, build);
-			
-			
-
-			
 		}
 		
 		//Tests bad data
