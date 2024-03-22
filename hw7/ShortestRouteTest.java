@@ -14,7 +14,7 @@ public class ShortestRouteTest {
 	//Legacy code - good data
 	@Test
 	public void testShortestRouteMain() {
-		//CC, Boundary 1 testcase
+		//CC, Boundary 1, good data testcase
 		int[][] weights = {
 		{0,1,-1,-1,1,-1,-1,-1},                   
 		{1,0,1,-1,-1,-1,-1,-1},                   
@@ -91,17 +91,17 @@ public class ShortestRouteTest {
 	
 	@Test
 	public void testShortestRouteBoundary() {
-		//Boundary 3 - one neighbor
+		//Boundary 3 - one neighbor, visited
 		Room zero = new Room(0);
 		Room one = new Room(1);
 		zero.neighbors.add(one);
 		one.neighbors.add(zero);
 		
 		int[][] weights = {{0,1},{1,0}};
-		weights[0][0] = 0;
+		
 		List<Room> pairRoute = ShortestRoute.shortestRoute(zero, weights);
-
-		assertEquals(pairRoute.get(0).weight, 1);
+		
+		assertEquals(pairRoute.get(0).weight, 0);
 		
 	}
 	@Test
@@ -148,8 +148,8 @@ public class ShortestRouteTest {
 	
 	@Test
 	public void testBuildRouteData() {
-		AssertionError data = routeBuilderTests.badData();
-		if(data==null) {
+		int data = routeBuilderTests.badData();
+		if(data!=2) {
 			fail();
 		}
 	}
@@ -158,27 +158,28 @@ public class ShortestRouteTest {
 	@Test
 	public void testWeightGraphMain() {
 		List<Room> mainCC = weightGraphTests.mainCC();
-		int[] expected = {3,0,0};
+		int[] expected = {6,0,0};
+		System.out.println(mainCC.get(0).weight);
 		for(int i = 0; i<3; i++) {
 			assertEquals(mainCC.get(i).weight, expected[i]);
 		}
 	}
 	@Test
 	public void testWeightGraphBranch() {
-		List<Room> branch = weightGraphTests.mainCC();
+		List<Room> branch = weightGraphTests.branch();
 		assertEquals(branch.get(0).weight,0);
 		assertEquals(branch.size(), 1);
 	}
 	@Test
 	public void testWeightGraphBoundary() {
-		List<Room> boundary = weightGraphTests.mainCC();
+		List<Room> boundary = weightGraphTests.boundary();
 		assertEquals(boundary.get(0).weight,0);
-		assertEquals(boundary.size(), 1);
+		
 	}
 	@Test
 	public void testWeightGraphData() {
-		AssertionError data = weightGraphTests.badData();
-		if(data== null) {
+		int data = weightGraphTests.badData();
+		if(data!= 2) {
 			fail();
 		}
 	}

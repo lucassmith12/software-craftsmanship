@@ -61,16 +61,15 @@ public class ShortestRoute {
 		build.add(start);
 		start.visited = false;
 
+		//Sort the weights to add the smallest weighted nodes first
+		start.sortNeighbors(weights);
+		
 		//Base Case: Reach the end of a subgraph, return just this node
 		//Pseudocode: if u has no unvisited neighbors do:
 		//return {0, {u}}
-
 		if(start.neighbors.size()<=1) {
 			return build;
 		}
-
-		//Sort the weights to add the smallest weighted nodes first
-		start.sortNeighbors(weights);
 
 		//Recursive Case: build a loop through the subgraph
 		/*Pseudocode: for each neighbor p of u:
@@ -145,21 +144,18 @@ public class ShortestRoute {
 		
 		//Tests CC1, Branch 1 
 		public static List<Room> branch() {
-			
 			Room start = new Room(0);
 			List<Room> build = new ArrayList<>();
 			int [][] weights = {{0},{0}}; 
 			return ShortestRoute.routeBuilder(start, weights, build);
-			
-			
-
 		}
 		
 		//Tests Boundary, Branch 2
 		public static List<Room> boundary() {
-			
 			Room start = new Room(0);
 			Room neighbor = new Room(1);
+			start.neighbors.add(neighbor);
+			neighbor.neighbors.add(start);
 			neighbor.visited = false;
 			int [][] weights = {{0,1}, {1,0}}; 
 			List<Room> build = new ArrayList<>();
@@ -172,53 +168,65 @@ public class ShortestRoute {
 		}
 		
 		//Tests bad data
-		public static AssertionError badData() {
-			
+		public static int badData() {
 			Room start = null;
-			int[][] weights = null;
-			
+			int[][] weights = new int[0][0];
+			int thrown = 0;
+			List<Room> build = new ArrayList<>();
 			try{
-				List<Room> build = new ArrayList<>();
+				build = ShortestRoute.routeBuilder(start, weights, build);
+				
+			}catch(AssertionError e) {
+				thrown++;
+			}
+			try {
+				start = new Room(0);
+				weights = null;
 				build = ShortestRoute.routeBuilder(start, weights, build);
 			}catch(AssertionError e) {
-				return e;
+				thrown++;
 			}
-			return null;
+			return thrown;
 		}
 
 	}
 	class weightGraphTests{
 		//Tests CC2
 		public static List<Room> mainCC() {
-			
 			Room start = new Room(0);
 			Room neighbor1 = new Room(1);
 			Room neighbor2 = new Room(2);
+			
+			start.neighbors.add(neighbor1);
+			neighbor1.neighbors.add(start);
+			start.neighbors.add(neighbor2);
+			neighbor2.neighbors.add(start);
 			neighbor1.visited = false;
 			neighbor2.visited = false;
 			
 			int [][] weights = {{0,1,2},{1,0,-1},{2,-1,0}}; 
 			List<Room> build = new ArrayList<>();
-			return routeBuilder(start, weights, build);
+			build.add(start);
+			build.add(neighbor1);
+			build.add(neighbor2);
+			weightGraph(start, weights);
+			return build;
 			
 			
 		}
 		
 		//Tests CC1, Branch 1 
 		public static List<Room> branch() {
-			
 			Room start = new Room(0);
 			List<Room> build = new ArrayList<>();
+			build.add(start);
 			int [][] weights = {{0},{0}}; 
-			return ShortestRoute.routeBuilder(start, weights, build);
-			
-			
-
+			weightGraph(start, weights);
+			return build;
 		}
 		
 		//Tests Boundary, Branch 2
 		public static List<Room> boundary() {
-			
 			Room start = new Room(0);
 			Room neighbor = new Room(1);
 			start.neighbors.add(neighbor);
@@ -226,27 +234,33 @@ public class ShortestRoute {
 			neighbor.visited = true;
 			int [][] weights = {{0,1}, {1,0}}; 
 			List<Room> build = new ArrayList<>();
+			build.add(start);
+			build.add(neighbor);
 			
-			return ShortestRoute.routeBuilder(start, weights, build);
-			
-			
-
-			
+			weightGraph(start, weights);
+			return build;
 		}
 		
 		//Tests bad data
-		public static AssertionError badData() {
-			
+		public static int badData() {
 			Room start = null;
-			int[][] weights = null;
-			
+			int[][] weights = new int[1][1];
+			int thrown = 0;
 			try{
-				List<Room> build = new ArrayList<>();
-				build = ShortestRoute.routeBuilder(start, weights, build);
+				weightGraph(start, weights);
 			}catch(AssertionError e) {
-				return e;
+				thrown++;
 			}
-			return null;
+			try {
+				start = new Room(0);
+				weights = null;
+				weightGraph(start, weights);
+			}catch(AssertionError e){
+				thrown++;
+			}
+			return thrown;
+			
+			
 		}
 	}
 }
